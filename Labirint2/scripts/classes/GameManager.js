@@ -300,10 +300,13 @@ export class GameManager {
 
     nextLevel() {
         if (this.currentLevel > 2) {
+            // Награда за завершение игры
+            this.changeScore(1500);
             setTimeout(this.goToRecordTable, 2000);
             return;
         }
         if (this.currentLevel > 1) {
+            // Награда за заврешение первого уровння и переходим на второй ниже условия
             this.changeScore(1000);
         }
         this.objects.length = 0;
