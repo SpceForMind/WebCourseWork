@@ -1,0 +1,7 @@
+body {
+    background: url("../images/background.jpg");
+}
+
+canvas {
+    border: white groove 10px;
+}
