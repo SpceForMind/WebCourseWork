@@ -208,7 +208,7 @@ export class GameManager {
                 this.kill(obj);
             }
         }
-        if (!(ts === 1 || ts === 46 || ts === 111 || ts === 211 || ts === 214 || ts === 466) && obj.onTouchMap) {
+        if (!(ts === 424) && obj.onTouchMap) {
             let answer = obj.onTouchMap(ts);
             if (answer === 'next level' && !this.isDefferendUpLevel) {
                 this.soundManager.play("./public/sound/good.mp3");
@@ -231,6 +231,7 @@ export class GameManager {
             }
             return;
         }
+        // Условие стрельбы врагом в игрока
         if (typeWithoutDirection[0] === 'enemy') {
             for (let i = 0; i < 5; i++) {
                 let tempX = obj.pos_x + Math.floor(obj.move_x * obj.speed) + i*this.mapManager.blockWidth*obj.move_x;
@@ -244,7 +245,8 @@ export class GameManager {
                 }
             }
         }
-        if ((ts === 1 || ts === 46 || ts === 111 || ts === 211 || ts === 214 || ts === 466) && e === null) {
+        // Условие перемещения - если идем по клетке земли и нет объектов, которые нам препятствуеют(e - var)
+        if ((ts === 424) && e === null) {
             obj.pos_x = newX;
             obj.pos_y = newY;
         } else {
