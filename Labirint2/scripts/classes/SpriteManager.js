@@ -29,7 +29,7 @@ export class SpriteManager {
 
     drawSprite(context, type, direction, x, y, view) {
         if (!this.isImgLoad || !this.isJsonLoad) {
-            setTimeout(() => { this.drawSprite(context, name, x, y); }, 100);
+            setTimeout(() => { this.drawSprite(context, type, direction, x, y, view); }, 100);
         } else {
             let sprite = this.getSprite(`${type}${direction}`);
             if (!this.isVisible(x, y, sprite.w, sprite.h, view)) return;

@@ -29,7 +29,7 @@ export class Player extends Entity{
     }
 
     onTouchMap(obj) { // обработка встречи с препятствием
-        if (obj === 280 || obj === 281 || obj === 277 || obj === 278) return 'next level';
+        if (obj === 280 || obj === 281 || obj === 277 || obj === 278 || obj === 433) return 'next level';
         if (obj === 284 || obj === 367) return 'hill';
         if (obj === 283 && this.valueObjects[283]) {
             this.valueObjects[283] = false;

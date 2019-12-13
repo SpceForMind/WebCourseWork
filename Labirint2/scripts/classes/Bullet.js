@@ -9,8 +9,8 @@ export class Bullet extends Entity{
         this.direction = '';
     }
 
-    onTouchMap(obj) { // обработка встречи с препятствием
-        if (!(obj === 1 || obj === 46 || obj === 111 || obj === 211 || obj === 214 || obj === 466)) return 'dead';
+    onTouchMap(obj) { // обработка встречи с препятствием - земля 424(уровень 1) все остальное - препятствия или враги
+        if (!(obj === 424 || obj === 111)) return 'dead';
     }
 
     onTouchEntity(obj) { // обработка встречи с объектом

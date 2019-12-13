@@ -26,9 +26,9 @@ export class GameManager {
         this.factory['bullet'] = new Bullet();
 
         if (localStorage["mode"] === undefined || localStorage['mode'] === 'ez') {
-            this.damage = {'enemy': -1, 'player': -1};
+            this.damage = {'enemy': -1, 'player': 100};
         } else {
-            this.damage = {'enemy': -1, 'player': -1};
+            this.damage = {'enemy': -1, 'player': 100};
         }
         console.log(this.damage);
 
@@ -180,15 +180,14 @@ export class GameManager {
 
     update(obj) {
         if (obj.move_x === 0 && obj.move_y === 0) return 'stop';
-        if (obj.name === 'bullet1') console.log('tut');
         let newX = obj.pos_x + Math.floor(obj.move_x * obj.speed);
         let newY = obj.pos_y + Math.floor(obj.move_y * obj.speed);
         let ts = this.mapManager.getTilesetIndex(newX + obj.size_x/2, newY + obj.size_y/2); // 1, 211, 214, 466, 46, 280 и 281(замок), 111(дорога во второй карте)
         if (obj === this.player) console.log(ts);
-        let e = this.entityAtXY(obj, newX, newY);
+        let e = this.entityAtXY(obj, newX, newY); // Сущность по координатоам newX, newY
 
         let typeWithoutDirection = obj.type.split('_');
-
+        // Условие, где проверяем - попал ли снаряд в Игрока или же во Врага
         if (e !== null && obj.onTouchEntity) {
             let answer = obj.onTouchEntity(e);
             if (answer === 'hit on the player') {
@@ -208,7 +207,7 @@ export class GameManager {
                 this.kill(obj);
             }
         }
-        if (!(ts === 424) && obj.onTouchMap) {
+        if (!(ts === 424 || ts === 111) && obj.onTouchMap) {
             let answer = obj.onTouchMap(ts);
             if (answer === 'next level' && !this.isDefferendUpLevel) {
                 this.soundManager.play("./public/sound/good.mp3");
@@ -246,7 +245,7 @@ export class GameManager {
             }
         }
         // Условие перемещения - если идем по клетке земли и нет объектов, которые нам препятствуеют(e - var)
-        if ((ts === 424) && e === null) {
+        if ((ts === 424 || ts === 111) && e === null) {
             obj.pos_x = newX;
             obj.pos_y = newY;
         } else {
@@ -255,9 +254,11 @@ export class GameManager {
         return 'move';
     }
 
+    // Сущность по координатам x, y
     entityAtXY(obj, x, y) {
         for (let i = 0; i < this.objects.length; i++) {
             let e = this.objects[i];
+            // Исключаем попадание объекта самого в себя
             if (e.name !== obj.name) {
                 if (x + obj.size_x < e.pos_x || y + obj.size_y < e.pos_y || x > e.pos_x + e.size_x || y > e.pos_y + e.size_y) continue;
                 return e;
