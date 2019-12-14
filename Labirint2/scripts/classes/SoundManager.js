@@ -10,7 +10,7 @@ export class SoundManager {
     init() { // инициализация
         this.context = new AudioContext();
         this.context.resume();
-        this.gainNode = this.context.createGain ? this.context.createGain() : this.context.createGainNode();
+        this.gainNode = this.context.createGain ? this.context.createGain() : this.context.createGainNode(); // Создание главного узла
         this.gainNode.connect(this.context.destination); // подключение к динамикам
     }
 
@@ -52,7 +52,7 @@ export class SoundManager {
 
     play(path, settings) { // проигрывание файла
         if (!this.loaded) {
-            setTimeout(() => {this.play(path, settings);}, 1000);
+            setTimeout(() => {this.play(path, settings);}, 500);
             return;
         }
         if (this.isEmpty) return;

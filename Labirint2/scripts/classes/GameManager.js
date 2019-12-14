@@ -42,7 +42,9 @@ export class GameManager {
         this.eventsManager.setup(this.canvas);
         this.soundManager.init();
         this.soundManager.loadArray(['./public/sound/background.mp3', './public/sound/bullet.mp3', './public/sound/boom.mp3', './public/sound/good.mp3']);
+        // Включаем сопровождающую музыку фоном в цикле
         this.soundManager.play("./public/sound/background.mp3", {looping: true, volume: 0.1});
+        // Добавляем обработчик события нажатия на кнопку 'mute' - вызов метода this.soundManager.toggleMute() и изменение html
         document.getElementById('mute').addEventListener('click', () => {
             let temp = document.getElementById('mute');
             if (temp.innerHTML === 'Отключить звук') temp.innerHTML = 'Включить звук';
@@ -182,7 +184,7 @@ export class GameManager {
         if (obj.move_x === 0 && obj.move_y === 0) return 'stop';
         let newX = obj.pos_x + Math.floor(obj.move_x * obj.speed);
         let newY = obj.pos_y + Math.floor(obj.move_y * obj.speed);
-        let ts = this.mapManager.getTilesetIndex(newX + obj.size_x/2, newY + obj.size_y/2); // 1, 211, 214, 466, 46, 280 и 281(замок), 111(дорога во второй карте)
+        let ts = this.mapManager.getTilesetIndex(newX + obj.size_x/2, newY + obj.size_y/2); // берем тайл, на котором находится объект
         if (obj === this.player) console.log(ts);
         let e = this.entityAtXY(obj, newX, newY); // Сущность по координатоам newX, newY
 
@@ -210,6 +212,10 @@ export class GameManager {
         if (!(ts === 424 || ts === 111) && obj.onTouchMap) {
             let answer = obj.onTouchMap(ts);
             if (answer === 'next level' && !this.isDefferendUpLevel) {
+                // Означает, что мы уже завершили игру и ждем 2000 мс до появления таблицы рекордов
+                if (this.currentLevel === -1) {
+                    return
+                }
                 this.soundManager.play("./public/sound/good.mp3");
                 this.isDefferendUpLevel = true;
                 this.currentLevel++;
@@ -302,6 +308,7 @@ export class GameManager {
         if (this.currentLevel > 2) {
             // Награда за завершение игры
             this.changeScore(1500);
+            this.currentLevel = -1; // Означает, что конец игры
             setTimeout(this.goToRecordTable, 2000);
             return;
         }
