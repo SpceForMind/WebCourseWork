@@ -5,3 +5,12 @@ body {
 canvas {
     border: white groove 10px;
 }
+
+input, select{
+    color: white;
+    background-color: black;
+}
+
+
+
+
